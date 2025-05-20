@@ -125,3 +125,85 @@ The process ensures real-time collection and use of critical data (health status
 
 ✅ Phase II Complete – Business process modeled and explained using BPMN.
 
+
+
+
+
+# Phase III
+
+## 🧩 Logical Model Design – HOOF-CARE MIS
+
+This phase defines the logical data model for the HOOF-CARE Management Information System. It aligns with the problem definition in **Phase I** and the business process modeling in **Phase II**.
+
+---
+
+## 1️⃣ Entity-Relationship (ER) Model
+
+### 🔹 Entities and Attributes
+
+| **Entity**       | **Attributes** |
+|------------------|----------------|
+| **Horse**        | `HorseID (PK)`, `Name`, `Breed`, `DateOfBirth`, `OwnerID (FK)` |
+| **Owner**        | `OwnerID (PK)`, `Name`, `ContactInfo` |
+| **Trainer**      | `TrainerID (PK)`, `Name`, `ExperienceLevel`, `ContactInfo` |
+| **Veterinarian** | `VetID (PK)`, `Name`, `Specialization`, `ContactInfo` |
+| **TrainingLog**  | `TrainingID (PK)`, `HorseID (FK)`, `TrainerID (FK)`, `Date`, `Duration`, `PerformanceNotes` |
+| **HealthRecord** | `RecordID (PK)`, `HorseID (FK)`, `VetID (FK)`, `Date`, `HealthStatus`, `MedicationGiven` |
+| **RaceEvent**    | `EventID (PK)`, `EventName`, `Date`, `Location` |
+| **Participation**| `ParticipationID (PK)`, `HorseID (FK)`, `EventID (FK)`, `Result`, `Rank`, `TimeCompleted` |
+| **BettingInsight** | `InsightID (PK)`, `HorseID (FK)`, `EventID (FK)`, `Odds`, `Notes` |
+
+---
+
+## 2️⃣ Relationships & Constraints
+
+### 🔗 Relationships
+
+- **Horse ↔ Owner**: Many-to-One
+- **Horse ↔ Trainer**: Many-to-Many via `TrainingLog`
+- **Horse ↔ Veterinarian**: Many-to-Many via `HealthRecord`
+- **Horse ↔ RaceEvent**: Many-to-Many via `Participation`
+- **Horse ↔ BettingInsight**: Many-to-Many via `BettingInsight`
+
+### ✅ Constraints
+
+- `Horse.Name` → `NOT NULL`
+- `TrainingLog.Duration` → `CHECK(Duration > 0)`
+- `HealthRecord.HealthStatus` → `NOT NULL`
+- `Participation.Result` → `DEFAULT 'Pending'`
+- `Owner.ContactInfo`, `Trainer.ContactInfo` → `UNIQUE`
+
+---
+
+## 3️⃣ Normalization
+
+This logical model is fully normalized to **Third Normal Form (3NF)**:
+
+- **1NF**: All values are atomic.
+- **2NF**: All attributes depend fully on the primary key.
+- **3NF**: No transitive dependencies between non-key attributes.
+
+---
+
+## 4️⃣ Handling Data Scenarios
+
+The design handles various real-world situations:
+
+- Horses training with multiple trainers → handled via `TrainingLog`.
+- One veterinarian treating many horses → handled via `HealthRecord`.
+- Horses entering many races → managed via `Participation`.
+- Betting data tied to specific races → handled via `BettingInsight`.
+
+---
+
+## 5️⃣ Presentation & Review
+
+This file documents the logical model clearly and is ready for review. It includes all key entities, their attributes, relationships, and constraints for feedback before moving to Phase IV (Physical Design or Implementation).
+
+---
+
+## 📌 Status
+
+✅ Phase III Complete – Logical model design finished and documented.
+
+
