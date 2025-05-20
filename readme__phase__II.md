@@ -40,7 +40,7 @@ The process ensures real-time collection and use of critical data (health status
 
 ## 🏊 BPMN Swimlane Diagram
 
-![BPMN Diagram](A_UML_Business_Process_Model_and_Notation_(BPMN)_d.png)
+![BPMN Diagram](https://github.com/Rugerot/THURS_Tresor_26858_pl_Assign/blob/main/hoofcare_bpmn.png)
 
 > **Legend**:  
 > • **Ovals**: Start/End  
