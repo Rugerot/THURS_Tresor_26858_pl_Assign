@@ -234,6 +234,8 @@ CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
 
 CREATE USER hoofcare_user IDENTIFIED BY tresor;
 GRANT CONNECT, RESOURCE, DBA TO hoofcare_user;
+
+```
 ### 🗃️ Pluggable Database (PDB)
 - **Name**: `thurs_26858_Tresor_hoofcare_db`
 - **Admin User**: `admin / tresor`
