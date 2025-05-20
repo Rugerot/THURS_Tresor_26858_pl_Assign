@@ -207,3 +207,58 @@ This file documents the logical model clearly and is ready for review. It includ
 ✅ Phase III Complete – Logical model design finished and documented.
 
 
+
+# Phase IV
+
+## 🗃️ Database Creation and OEM Monitoring – HOOF-CARE Project
+
+This phase documents the creation of the Oracle Pluggable Database (PDB) for the HOOF-CARE MIS project and its configuration in Oracle Enterprise Manager (OEM) for monitoring and administration.
+
+---
+
+## ✅ 1. Database Creation
+
+### ➤ Pluggable Database (PDB) Name
+
+
+### ➤ Creation Details
+The PDB was created using the following command:
+
+```sql
+CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
+  ADMIN USER admin IDENTIFIED BY tresor
+  FILE_NAME_CONVERT = (
+    'C:/APP/TRESO/PRODUCT/21C/ORADATA/XE/PDBSEED/',
+    'C:/APP/TRESO/PRODUCT/21C/ORADATA/XE/thurs_26858_Tresor_hoofcare_db/'
+  );
+
+CREATE USER hoofcare_user IDENTIFIED BY tresor;
+GRANT CONNECT, RESOURCE, DBA TO hoofcare_user;
+### 🗃️ Pluggable Database (PDB)
+- **Name**: `thurs_26858_Tresor_hoofcare_db`
+- **Admin User**: `admin / tresor`
+- **Project User**: `hoofcare_user / tresor`
+
+### 📦 Tables Created
+- All entities from Phase III were created using SQL `CREATE TABLE` scripts.
+- Dummy data was inserted for testing and validation.
+
+### 🌐 Oracle Enterprise Manager (OEM)
+
+- OEM Express used to monitor the pluggable database.
+- Login as `hoofcare_user` and connect to the PDB.
+
+#### OEM Login Screen:
+![OEM Login Screen](OEM0.png)
+
+#### OEM Dashboard:
+![OEM Dashboard](OEM1.png)
+
+### 📝 OEM Features Used
+- Session and resource monitoring
+- Storage utilization
+- Schema overview for tables created in `hoofcare_user`
+
+---
+
+
