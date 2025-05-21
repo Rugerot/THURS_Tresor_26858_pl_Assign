@@ -277,6 +277,7 @@ Password: tresor
 📸 Screenshots of Monitoring:
 
 OEM Login Screen
+![image](https://github.com/user-attachments/assets/7184bae8-a00d-4f1f-9843-6c4ec7c18eb1)
 
 OEM Dashboard View
 
