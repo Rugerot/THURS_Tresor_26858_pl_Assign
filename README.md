@@ -284,5 +284,89 @@ OEM Dashboard View
 
 These screenshots confirm successful login and monitoring of the correct pluggable database and user session.
 
+---
+
+
+# Phase V – Table Implementation and Data Insertion
+
+## 🐎 Project: HOOF-CARE MIS – Physical Database Structure
+
+This phase focuses on implementing the physical structure of the database based on the logical model defined in Phase III. It includes creating tables in Oracle SQL, inserting realistic data, and enforcing data integrity using constraints and relationships.
+
+---
+
+## ✅ 1. Table Creation
+
+All tables were created under the `hoofcare_user` schema inside the PDB `thurs_26858_Tresor_hoofcare_db`. Each table corresponds to a key entity in the system and includes:
+
+- **Appropriate data types**
+- **Primary and foreign keys**
+- **NOT NULL, UNIQUE, and CHECK constraints**
+
+### 📋 Tables Created:
+- `Owner`
+- `Horse`
+- `Trainer`
+- `Veterinarian`
+- `TrainingLog`
+- `HealthRecord`
+- `RaceEvent`
+- `Participation`
+- `BettingInsight`
+
+Each table was created using SQL `CREATE TABLE` statements with structural constraints to enforce data validity and integrity.
+
+---
+
+## ✍️ 2. Data Insertion
+
+Realistic and meaningful data was inserted to simulate typical operations within the HOOF-CARE system.
+
+Examples include:
+- Horse training logs with durations and performance notes
+- Health records from veterinarians with check-up dates and treatment
+- Participation records in race events
+- Betting insights with race odds and analytical notes
+
+All data was inserted using standard SQL `INSERT INTO` commands.
+
+> Data was committed using:
+```sql
+COMMIT;
+```
+
+🛡 3. Data Integrity Enforcement
+Integrity was validated using:
+
+Primary Keys to uniquely identify each entity
+
+Foreign Keys to maintain relational dependencies
+
+NOT NULL to ensure essential fields are always filled
+
+UNIQUE to avoid duplicate contact information
+
+CHECK constraints to validate logical values (e.g., Duration > 0)
+
+🔎 Validation Queries Used:
+
+-- Check horses without owners
+SELECT * FROM Horse WHERE OwnerID NOT IN (SELECT OwnerID FROM Owner);
+
+-- Check horses without training logs
+SELECT HorseID FROM Horse
+MINUS
+SELECT HorseID FROM TrainingLog;
+
+-- Check for duplicate trainer emails
+SELECT ContactInfo, COUNT(*) FROM Trainer GROUP BY ContactInfo HAVING COUNT(*) > 1;
+
+-- Check invalid training durations
+SELECT * FROM TrainingLog WHERE Duration <= 0;
+
+
+---
+
+
 
 
