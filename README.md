@@ -280,6 +280,7 @@ OEM Login Screen
 ![image](https://github.com/user-attachments/assets/7184bae8-a00d-4f1f-9843-6c4ec7c18eb1)
 
 OEM Dashboard View
+![image](https://github.com/user-attachments/assets/b24a7f7d-7d80-4a9f-9ed7-186980931968)
 
 These screenshots confirm successful login and monitoring of the correct pluggable database and user session.
 
