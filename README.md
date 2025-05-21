@@ -275,7 +275,7 @@ Password: tresor
 
 📸 Screenshots of Monitoring:
 OEM Login Screen
-
+https://github.com/Rugerot/THURS_Tresor_26858_pl_Assign/blob/main/OEM0.png?raw=true
 OEM Dashboard View
 
 These screenshots confirm successful login and monitoring of the correct pluggable database and user session.
