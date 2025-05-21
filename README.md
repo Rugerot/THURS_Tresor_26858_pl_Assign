@@ -208,21 +208,21 @@ This file documents the logical model clearly and is ready for review. It includ
 
 
 
-# Phase IV
+# Phase IV – Database Creation and OEM Monitoring
 
-## 🗃️ Database Creation and OEM Monitoring – HOOF-CARE Project
+## 📘 Project: HOOF-CARE – Horse Health & Performance Monitoring MIS
 
-This phase documents the creation of the Oracle Pluggable Database (PDB) for the HOOF-CARE MIS project and its configuration in Oracle Enterprise Manager (OEM) for monitoring and administration.
+This document details the successful creation of a pluggable Oracle database (PDB) for the HOOF-CARE system and its integration with Oracle Enterprise Manager (OEM) for monitoring. Phase IV ensures proper setup, access control, and visibility into the system's runtime behavior.
 
 ---
 
-## ✅ 1. Database Creation
+## 🗂️ 1. Pluggable Database Creation
 
-### ➤ Pluggable Database (PDB) Name
+### ✅ PDB Name
+thurs_26858_Tresor_hoofcare_db
 
 
-### ➤ Creation Details
-The PDB was created using the following command:
+### ✅ SQL Command Used
 
 ```sql
 CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
@@ -231,36 +231,54 @@ CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
     'C:/APP/TRESO/PRODUCT/21C/ORADATA/XE/PDBSEED/',
     'C:/APP/TRESO/PRODUCT/21C/ORADATA/XE/thurs_26858_Tresor_hoofcare_db/'
   );
+```
+
+This command creates the PDB using the PDBSEED template and assigns admin as the default administrator with DBA privileges.
+
+👤 2. User Creation
+➤ Admin User
+Username: admin
+
+Password: tresor
+
+➤ Project Schema User
 
 CREATE USER hoofcare_user IDENTIFIED BY tresor;
 GRANT CONNECT, RESOURCE, DBA TO hoofcare_user;
 
-```
-### 🗃️ Pluggable Database (PDB)
-- **Name**: `thurs_26858_Tresor_hoofcare_db`
-- **Admin User**: `admin / tresor`
-- **Project User**: `hoofcare_user / tresor`
+This user will be used in future phases for schema creation and PL/SQL development.
 
-### 📦 Tables Created
-- All entities from Phase III were created using SQL `CREATE TABLE` scripts.
-- Dummy data was inserted for testing and validation.
+🔄 3. Listener and Service Configuration
+To verify that the listener recognizes the newly created PDB:
 
-### 🌐 Oracle Enterprise Manager (OEM)
+lsnrctl services
 
-- OEM Express used to monitor the pluggable database.
-- Login as `hoofcare_user` and connect to the PDB.
+The output confirmed the registration of the service:
 
-#### OEM Login Screen:
-![OEM Login Screen](OEM0.png)
+Service "thurs_26858_Tresor_hoofcare_db" has 1 instance(s) ...
 
-#### OEM Dashboard:
-![OEM Dashboard](OEM1.png)
+➤ Connection Tested Using SQL*Plus
 
-### 📝 OEM Features Used
-- Session and resource monitoring
-- Storage utilization
-- Schema overview for tables created in `hoofcare_user`
+sqlplus hoofcare_user/tresor@localhost:1521/thurs_26858_Tresor_hoofcare_db
 
----
+🌐 4. Oracle Enterprise Manager (OEM) Monitoring
+OEM Express was accessed via:
+
+https://localhost:5500/em
+
+➤ Login Credentials
+User: hoofcare_user
+
+Container: THURS_26858_TRESOR_HOOFCARE_DB
+
+Password: tresor
+
+📸 Screenshots of Monitoring:
+OEM Login Screen
+
+OEM Dashboard View
+
+These screenshots confirm successful login and monitoring of the correct pluggable database and user session.
+
 
 
