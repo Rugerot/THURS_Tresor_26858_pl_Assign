@@ -338,15 +338,15 @@ COMMIT;
 ## 🛡 3. Data Integrity Enforcement
 Integrity was validated using:
 
-Primary Keys to uniquely identify each entity
+- Primary Keys to uniquely identify each entity
 
-Foreign Keys to maintain relational dependencies
+- Foreign Keys to maintain relational dependencies
 
-NOT NULL to ensure essential fields are always filled
+- NOT NULL to ensure essential fields are always filled
 
-UNIQUE to avoid duplicate contact information
+- UNIQUE to avoid duplicate contact information
 
-CHECK constraints to validate logical values (e.g., Duration > 0)
+- CHECK constraints to validate logical values (e.g., Duration > 0)
 
 ### 🔎 Validation Queries Used:
 ```sql
@@ -414,11 +414,11 @@ Thunderbolt | 2 | Completed | +0 00:02:15.00
 
 This procedure uses:
 
-A cursor to fetch data
+- A cursor to fetch data
 
-A parameter to accept the Event ID
+- A parameter to accept the Event ID
 
-Exception handling using WHEN OTHERS
+- Exception handling using WHEN OTHERS
 
 
 
@@ -439,11 +439,11 @@ AVG_DURATION
 
 ### The function:
 
-Uses AVG() aggregate function
+- Uses AVG() aggregate function
 
-Accepts horse ID as input
+- Accepts horse ID as input
 
-Returns NULL on error or no data
+- Returns NULL on error or no data
 
 ## 📦 4. PL/SQL Package: hoofcare_package
 The package wraps both the procedure and function to support modular programming.
@@ -463,8 +463,8 @@ Implements both with error handling, cursors, and logic.
 
 ## 🔁 5. DML and DDL Operations
 ### Type	Example
-DML	INSERT INTO Participation VALUES (...), UPDATE, DELETE, COMMIT
-DDL	CREATE TABLE, ALTER, DROP, CREATE PROCEDURE, CREATE FUNCTION, CREATE PACKAGE
+- DML	INSERT INTO Participation VALUES (...), UPDATE, DELETE, COMMIT
+- DDL	CREATE TABLE, ALTER, DROP, CREATE PROCEDURE, CREATE FUNCTION, CREATE PACKAGE
 
 All operations were successfully executed under hoofcare_user in the PDB thurs_26858_Tresor_hoofcare_db.
 
@@ -552,7 +552,7 @@ EXCEPTION
 ```
 
 
-Ensures safe execution without unexpected crashes.
+> Ensures safe execution without unexpected crashes.
 
 ### 📌 Phase Completion Status
 
@@ -615,9 +615,9 @@ COMMIT;
 ## 🔒 3. Trigger to Enforce DML Restrictions
 This BEFORE INSERT OR UPDATE OR DELETE trigger blocks DML on the TrainingLog table during:
 
-Weekdays (Mon–Fri)
+- Weekdays (Mon–Fri)
 
-Any holiday listed in HolidayDates
+- Any holiday listed in HolidayDates
 
 ```sql
 CREATE OR REPLACE TRIGGER trg_block_and_audit_traininglog
@@ -696,7 +696,7 @@ END;
 ```sql
 INSERT INTO TrainingLog (...) VALUES (...);
 ```
-Output:
+### Output:
 
 ```sql
 ORA-20001: DML operations are restricted on weekdays and holidays.
@@ -717,13 +717,13 @@ SELECT * FROM AuditLog ORDER BY ActionDate DESC, ActionTime DESC;
 
 This approach:
 
-Prevents unauthorized changes during critical periods
+- Prevents unauthorized changes during critical periods
 
-Logs all DML attempts for review and compliance
+- Logs all DML attempts for review and compliance
 
-Supports real-time monitoring and historical audits
+- Supports real-time monitoring and historical audits
 
-It aligns with the HOOF-CARE MIS goal of ensuring data reliability and controlled access in a high-integrity environment.
+- It aligns with the HOOF-CARE MIS goal of ensuring data reliability and controlled access in a high-integrity environment.
 
 ### ✅ Phase Completion Status
 
