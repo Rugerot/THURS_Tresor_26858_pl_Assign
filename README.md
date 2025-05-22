@@ -235,7 +235,7 @@ CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
 
 This command creates the PDB using the PDBSEED template and assigns admin as the default administrator with DBA privileges.
 
-👤 2. User Creation
+## 👤 2. User Creation
 ➤ Admin User
 Username: admin
 
@@ -248,7 +248,7 @@ GRANT CONNECT, RESOURCE, DBA TO hoofcare_user;
 
 This user will be used in future phases for schema creation and PL/SQL development.
 
-🔄 3. Listener and Service Configuration
+## 🔄 3. Listener and Service Configuration
 To verify that the listener recognizes the newly created PDB:
 
 lsnrctl services
@@ -261,7 +261,7 @@ Service "thurs_26858_Tresor_hoofcare_db" has 1 instance(s) ...
 
 sqlplus hoofcare_user/tresor@localhost:1521/thurs_26858_Tresor_hoofcare_db
 
-🌐 4. Oracle Enterprise Manager (OEM) Monitoring
+## 🌐 4. Oracle Enterprise Manager (OEM) Monitoring
 OEM Express was accessed via:
 
 https://localhost:5500/em
@@ -335,7 +335,7 @@ All data was inserted using standard SQL `INSERT INTO` commands.
 COMMIT;
 ```
 
-🛡 3. Data Integrity Enforcement
+## 🛡 3. Data Integrity Enforcement
 Integrity was validated using:
 
 Primary Keys to uniquely identify each entity
@@ -348,7 +348,7 @@ UNIQUE to avoid duplicate contact information
 
 CHECK constraints to validate logical values (e.g., Duration > 0)
 
-🔎 Validation Queries Used:
+###🔎 Validation Queries Used:
 
 -- Check horses without owners
 SELECT * FROM Horse WHERE OwnerID NOT IN (SELECT OwnerID FROM Owner);
@@ -401,7 +401,7 @@ Displays a list of horses participating in a specific event, sorted by finish ti
 EXEC hoofcare_package.get_participation_by_event(1);
 ```
 
-🔍 Output Example:
+### 🔍 Output Example:
 
 Horse Name | Rank | Result | Time Completed
 --------------------------------------------
@@ -418,11 +418,11 @@ Exception handling using WHEN OTHERS
 
 
 
-📊 3. PL/SQL Function: get_avg_training_duration
-📋 Description:
+## 📊 3. PL/SQL Function: get_avg_training_duration
+### 📋 Description:
 Returns the average duration of all training sessions for a given horse.
 
-📄 Syntax:
+### 📄 Syntax:
 
 ```sql
 SELECT hoofcare_package.get_avg_training_duration(1) AS avg_duration FROM dual;
@@ -433,7 +433,7 @@ AVG_DURATION
 ------------
 52.5
 
-The function:
+### The function:
 
 Uses AVG() aggregate function
 
@@ -441,10 +441,10 @@ Accepts horse ID as input
 
 Returns NULL on error or no data
 
-📦 4. PL/SQL Package: hoofcare_package
+## 📦 4. PL/SQL Package: hoofcare_package
 The package wraps both the procedure and function to support modular programming.
 
-✅ Package Specification:
+### ✅ Package Specification:
 
 ```sql
 CREATE OR REPLACE PACKAGE hoofcare_package AS
@@ -454,17 +454,17 @@ END hoofcare_package;
 ```
 
 
-✅ Package Body:
+### ✅ Package Body:
 Implements both with error handling, cursors, and logic.
 
-🔁 5. DML and DDL Operations
-Type	Example
+## 🔁 5. DML and DDL Operations
+### Type	Example
 DML	INSERT INTO Participation VALUES (...), UPDATE, DELETE, COMMIT
 DDL	CREATE TABLE, ALTER, DROP, CREATE PROCEDURE, CREATE FUNCTION, CREATE PACKAGE
 
 All operations were successfully executed under hoofcare_user in the PDB thurs_26858_Tresor_hoofcare_db.
 
-📦 6. Full Package Script (hoofcare_package.sql)
+## 📦 6. Full Package Script (hoofcare_package.sql)
 
 ```sql
 -- PACKAGE SPEC
@@ -527,7 +527,7 @@ END hoofcare_package;
 
 ```
 
-🧪 7. Testing Summary
+## 🧪 7. Testing Summary
 
 
 | Test                                    | Result                         |
@@ -538,7 +538,7 @@ END hoofcare_package;
 | Run invalid EventID in procedure        | ✅ Returns no results, no crash |
 
 
-🛡 7. Error Handling
+## 🛡 8. Error Handling
 Both the procedure and function include:
 
 ```sql
@@ -550,7 +550,7 @@ EXCEPTION
 
 Ensures safe execution without unexpected crashes.
 
-📌 Phase Completion Status
+###📌 Phase Completion Status
 
 | Task                      | Completed |
 | ------------------------- | --------- |
@@ -562,10 +562,180 @@ Ensures safe execution without unexpected crashes.
 | Testing and Validation    | ✅         |
 
 
-✅ Conclusion
+## ✅ Conclusion
 Phase VI successfully implements robust database interaction logic for the HOOF-CARE MIS. Key operations are now modular, testable, and fault-tolerant, ready for integration with front-end systems or advanced reporting in future phases.
 
 ---
+
+
+# Phase VII – Advanced Database Programming and Auditing
+
+## 📘 Project: HOOF-CARE MIS
+
+This final phase enhances the system with advanced PL/SQL programming techniques and auditing features that enforce data restrictions and ensure accountability. It addresses security requirements by restricting DML operations during specified periods and by logging user activity for sensitive operations.
+
+---
+
+## ✅ 1. Problem Statement
+
+In HOOF-CARE MIS, users manage sensitive records such as training logs, veterinary records, and race participation data. Unauthorized data manipulation—especially during business hours or holidays—poses a risk to data integrity and compliance.
+
+### To address this, we implemented:
+
+- A **weekday and holiday DML restriction trigger**
+- An **audit system** that records all DML attempts (whether allowed or blocked)
+- A **holiday reference table** that administrators can update monthly
+- A **standalone logging procedure** using an autonomous transaction to capture audit logs even during DML failures
+
+---
+
+## 📅 2. Holiday Reference Table
+
+A `HolidayDates` table stores the restricted dates.
+
+```sql
+CREATE TABLE HolidayDates (
+  HolidayDate DATE PRIMARY KEY,
+  Description VARCHAR2(100)
+);
+```
+Sample data for June 2025:
+
+```sql
+INSERT INTO HolidayDates VALUES (TO_DATE('2025-06-01', 'YYYY-MM-DD'), 'Madaraka Day');
+INSERT INTO HolidayDates VALUES (TO_DATE('2025-06-17', 'YYYY-MM-DD'), 'Veterinary Appreciation Day');
+INSERT INTO HolidayDates VALUES (TO_DATE('2025-06-20', 'YYYY-MM-DD'), 'Hoofcare Maintenance Break');
+COMMIT;
+```
+
+## 🔒 3. Trigger to Enforce DML Restrictions
+This BEFORE INSERT OR UPDATE OR DELETE trigger blocks DML on the TrainingLog table during:
+
+Weekdays (Mon–Fri)
+
+Any holiday listed in HolidayDates
+
+```sql
+CREATE OR REPLACE TRIGGER trg_block_and_audit_traininglog
+BEFORE INSERT OR UPDATE OR DELETE ON TrainingLog
+FOR EACH ROW
+DECLARE
+  v_today       DATE := TRUNC(SYSDATE);
+  v_day_name    VARCHAR2(10);
+  v_holiday_cnt NUMBER := 0;
+  v_op          VARCHAR2(10);
+  v_user        VARCHAR2(50);
+BEGIN
+  v_user := SYS_CONTEXT('USERENV', 'SESSION_USER');
+
+  IF INSERTING THEN
+    v_op := 'INSERT';
+  ELSIF UPDATING THEN
+    v_op := 'UPDATE';
+  ELSIF DELETING THEN
+    v_op := 'DELETE';
+  END IF;
+
+  SELECT TO_CHAR(v_today, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH') INTO v_day_name FROM dual;
+
+  SELECT COUNT(*) INTO v_holiday_cnt FROM HolidayDates WHERE HolidayDate = v_today;
+
+  IF v_day_name IN ('MON', 'TUE', 'WED', 'THU', 'FRI') OR v_holiday_cnt > 0 THEN
+    log_audit_action(v_user, v_op, 'TrainingLog', 'DENIED', 'Weekday or holiday restriction');
+    RAISE_APPLICATION_ERROR(-20001, 'DML operations are restricted on weekdays and holidays.');
+  ELSE
+    log_audit_action(v_user, v_op, 'TrainingLog', 'ALLOWED', NULL);
+  END IF;
+END;
+/
+```
+
+## 📋 4. Audit Table
+All DML attempts are logged in this AuditLog table:
+
+```sql
+CREATE TABLE AuditLog (
+  LogID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+  UserName VARCHAR2(50),
+  Operation VARCHAR2(10),
+  TableName VARCHAR2(50),
+  ActionDate DATE DEFAULT SYSDATE,
+  ActionTime TIMESTAMP DEFAULT SYSTIMESTAMP,
+  Status VARCHAR2(20),
+  Reason VARCHAR2(200)
+);
+```
+
+## ⚙️ 5. Logging Procedure (log_audit_action)
+The procedure uses an autonomous transaction to insert audit logs independently of the main transaction (even if DML is blocked):
+
+```sql
+CREATE OR REPLACE PROCEDURE log_audit_action (
+  p_user     IN VARCHAR2,
+  p_op       IN VARCHAR2,
+  p_table    IN VARCHAR2,
+  p_status   IN VARCHAR2,
+  p_reason   IN VARCHAR2
+)
+IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+  INSERT INTO AuditLog (UserName, Operation, TableName, Status, Reason)
+  VALUES (p_user, p_op, p_table, p_status, p_reason);
+  COMMIT;
+END;
+/
+```
+## 🧪 6. Testing and Output
+###❌ Blocked Insert on Weekday:
+
+```sql
+INSERT INTO TrainingLog (...) VALUES (...);
+```
+Output:
+
+```sql
+ORA-20001: DML operations are restricted on weekdays and holidays.
+```
+### ✅ Logged in Audit Table:
+
+```sql
+SELECT * FROM AuditLog ORDER BY ActionDate DESC, ActionTime DESC;
+```
+
+### Sample Entry:
+
+| UserName       | Operation | Status | Reason                         |
+| -------------- | --------- | ------ | ------------------------------ |
+| HOOFCARE\_USER | INSERT    | DENIED | Weekday or holiday restriction |
+
+## 🔐 7. Security Impact
+
+This approach:
+
+Prevents unauthorized changes during critical periods
+
+Logs all DML attempts for review and compliance
+
+Supports real-time monitoring and historical audits
+
+It aligns with the HOOF-CARE MIS goal of ensuring data reliability and controlled access in a high-integrity environment.
+
+### ✅ Phase Completion Status
+
+| Task                          | Completed |
+| ----------------------------- | --------- |
+| Problem Statement             | ✅         |
+| Holiday Table                 | ✅         |
+| Restriction Trigger           | ✅         |
+| Autonomous Logging Procedure  | ✅         |
+| Audit Table & Logging         | ✅         |
+| Testing and Output Validation | ✅         |
+
+
+### 📌 Conclusion
+This phase successfully introduces automation, restriction, and traceability into HOOF-CARE MIS. All sensitive operations are now governed by advanced PL/SQL logic with real-time audit trails — establishing a secure, monitored, and policy-driven environment.
+
 
 
 
