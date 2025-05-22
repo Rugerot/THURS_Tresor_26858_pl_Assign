@@ -1,9 +1,12 @@
 ## 📝 Introduction
 
-**Project Title:** HOOF-CARE Management Information System (MIS)  
-**Course:** Database Development with PL/SQL 
-**Institution:** AUCA  
-**Project Phase Coverage:** Phase I – VII  
+### **Project Title:** HOOF-CARE Management Information System (MIS)  
+
+### **Course:** Database Development with PL/SQL 
+
+###**Institution:** AUCA  
+
+### **Project Phase Coverage:** Phase I – VII  
 
 
 | Student Name            | Student ID      |
@@ -14,7 +17,7 @@
 
 This project addresses the need for a centralized and secure system to manage horse health, training, race participation, and betting analytics. The HOOF-CARE MIS streamlines operations for trainers, veterinarians, and race organizers by modeling workflows, managing data, and enforcing business rules.
 
-Key challenges addressed include:
+### Key challenges addressed include:
 - Accurate record-keeping of horse performance, health, and race data
 - Controlled access to sensitive operations using PL/SQL restrictions
 - Auditing and accountability through advanced database logging
