@@ -368,5 +368,197 @@ SELECT * FROM TrainingLog WHERE Duration <= 0;
 ---
 
 
+# Phase VI – Database Interaction and Transactions
+
+## 📘 Project: HOOF-CARE MIS
+
+This phase focuses on implementing database interaction logic using PL/SQL procedures, functions, and packages to automate and modularize operations such as data retrieval, analysis, and error handling.
+
+---
+
+## ✅ 1. Problem Statement
+
+**Objective:**  
+Retrieve a ranked list of horses based on their race performance (finish time) and analyze training patterns.
+
+### 🧩 Use Case 1:
+> Show all horses participating in a specific event, including their rank, result, and finish time.
+
+### 🧩 Use Case 2:
+> Calculate the average training session duration for a given horse.
+
+These use cases support performance analysis and race-readiness evaluation — core functions of the HOOF-CARE system.
+
+---
+
+## 🛠 2. PL/SQL Procedure: `get_participation_by_event`
+
+### 📋 Description:
+Displays a list of horses participating in a specific event, sorted by finish time.
+
+### 📄 Syntax:
+```sql
+EXEC hoofcare_package.get_participation_by_event(1);
+```
+
+🔍 Output Example:
+
+Horse Name | Rank | Result | Time Completed
+--------------------------------------------
+Thunderbolt | 2 | Completed | +0 00:02:15.00
+
+
+This procedure uses:
+
+A cursor to fetch data
+
+A parameter to accept the Event ID
+
+Exception handling using WHEN OTHERS
+
+
+
+📊 3. PL/SQL Function: get_avg_training_duration
+📋 Description:
+Returns the average duration of all training sessions for a given horse.
+
+📄 Syntax:
+
+SELECT hoofcare_package.get_avg_training_duration(1) AS avg_duration FROM dual;
+
+🔍 Output Example:
+
+AVG_DURATION
+------------
+52.5
+
+The function:
+
+Uses AVG() aggregate function
+
+Accepts horse ID as input
+
+Returns NULL on error or no data
+
+📦 4. PL/SQL Package: hoofcare_package
+The package wraps both the procedure and function to support modular programming.
+
+✅ Package Specification:
+
+CREATE OR REPLACE PACKAGE hoofcare_package AS
+  PROCEDURE get_participation_by_event(p_event_id IN Participation.EventID%TYPE);
+  FUNCTION get_avg_training_duration(p_horse_id IN TrainingLog.HorseID%TYPE) RETURN NUMBER;
+END hoofcare_package;
+
+
+✅ Package Body:
+Implements both with error handling, cursors, and logic.
+
+🔁 5. DML and DDL Operations
+Type	Example
+DML	INSERT INTO Participation VALUES (...), UPDATE, DELETE, COMMIT
+DDL	CREATE TABLE, ALTER, DROP, CREATE PROCEDURE, CREATE FUNCTION, CREATE PACKAGE
+
+All operations were successfully executed under hoofcare_user in the PDB thurs_26858_Tresor_hoofcare_db.
+
+📦 6. Full Package Script (hoofcare_package.sql)
+
+-- PACKAGE SPEC
+CREATE OR REPLACE PACKAGE hoofcare_package AS
+  PROCEDURE get_participation_by_event(p_event_id IN Participation.EventID%TYPE);
+  FUNCTION get_avg_training_duration(p_horse_id IN TrainingLog.HorseID%TYPE) RETURN NUMBER;
+END hoofcare_package;
+/
+
+-- PACKAGE BODY
+CREATE OR REPLACE PACKAGE BODY hoofcare_package AS
+  PROCEDURE get_participation_by_event (
+    p_event_id IN Participation.EventID%TYPE
+  ) IS
+    CURSOR part_cursor IS
+      SELECT h.Name, p.Rank, p.Result, p.TimeCompleted
+      FROM Participation p JOIN Horse h ON h.HorseID = p.HorseID
+      WHERE p.EventID = p_event_id ORDER BY p.TimeCompleted;
+
+    v_record part_cursor%ROWTYPE;
+
+  BEGIN
+    OPEN part_cursor;
+    DBMS_OUTPUT.PUT_LINE('Horse Name | Rank | Result | Time Completed');
+    DBMS_OUTPUT.PUT_LINE('--------------------------------------------');
+    LOOP
+      FETCH part_cursor INTO v_record;
+      EXIT WHEN part_cursor%NOTFOUND;
+      DBMS_OUTPUT.PUT_LINE(
+        v_record.Name || ' | ' ||
+        NVL(TO_CHAR(v_record.Rank), 'N/A') || ' | ' ||
+        v_record.Result || ' | ' ||
+        v_record.TimeCompleted
+      );
+    END LOOP;
+    CLOSE part_cursor;
+  EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+  END;
+
+  FUNCTION get_avg_training_duration (
+    p_horse_id IN TrainingLog.HorseID%TYPE
+  ) RETURN NUMBER
+  IS
+    v_avg_duration NUMBER;
+  BEGIN
+    SELECT AVG(Duration) INTO v_avg_duration FROM TrainingLog WHERE HorseID = p_horse_id;
+    RETURN v_avg_duration;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN NULL;
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+      RETURN NULL;
+  END;
+
+END hoofcare_package;
+/
+
+🧪 7. Testing Summary
+
+
+| Test                                    | Result                         |
+| --------------------------------------- | ------------------------------ |
+| Execute procedure with valid EventID    | ✅ Success                      |
+| Run function with HorseID that has logs | ✅ Success                      |
+| Run function with no data               | ✅ Returns NULL gracefully      |
+| Run invalid EventID in procedure        | ✅ Returns no results, no crash |
+
+
+🛡 7. Error Handling
+Both the procedure and function include:
+
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+
+
+Ensures safe execution without unexpected crashes.
+
+📌 Phase Completion Status
+
+| Task                      | Completed |
+| ------------------------- | --------- |
+| DML/DDL Execution         | ✅         |
+| Procedure with Cursor     | ✅         |
+| Function with Aggregation | ✅         |
+| Modular Package           | ✅         |
+| Error Handling            | ✅         |
+| Testing and Validation    | ✅         |
+
+
+✅ Conclusion
+Phase VI successfully implements robust database interaction logic for the HOOF-CARE MIS. Key operations are now modular, testable, and fault-tolerant, ready for integration with front-end systems or advanced reporting in future phases.
+
+---
+
+
 
 
