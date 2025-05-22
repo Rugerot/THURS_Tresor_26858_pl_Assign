@@ -463,6 +463,7 @@ All operations were successfully executed under hoofcare_user in the PDB thurs_2
 
 📦 6. Full Package Script (hoofcare_package.sql)
 
+```sql
 -- PACKAGE SPEC
 CREATE OR REPLACE PACKAGE hoofcare_package AS
   PROCEDURE get_participation_by_event(p_event_id IN Participation.EventID%TYPE);
@@ -520,6 +521,8 @@ CREATE OR REPLACE PACKAGE BODY hoofcare_package AS
 
 END hoofcare_package;
 /
+
+```
 
 🧪 7. Testing Summary
 
