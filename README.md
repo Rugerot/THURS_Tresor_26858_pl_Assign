@@ -1,3 +1,30 @@
+## 📝 Introduction
+
+**Project Title:** HOOF-CARE Management Information System (MIS)  
+**Course:** Database Development with PL/SQL 
+**Institution:** AUCA  
+**Project Phase Coverage:** Phase I – VII  
+
+
+| Student Name            | Student ID      |
+|-------------------------|-----------------|
+| NKUBIRI RUGERO Tresor   | 26858           |
+
+### 🎯 Problem Statement
+
+This project addresses the need for a centralized and secure system to manage horse health, training, race participation, and betting analytics. The HOOF-CARE MIS streamlines operations for trainers, veterinarians, and race organizers by modeling workflows, managing data, and enforcing business rules.
+
+Key challenges addressed include:
+- Accurate record-keeping of horse performance, health, and race data
+- Controlled access to sensitive operations using PL/SQL restrictions
+- Auditing and accountability through advanced database logging
+- Automation of administrative policies such as DML blocking on holidays and weekdays
+
+This project demonstrates full-cycle MIS development — from business process modeling and ERD design to advanced Oracle programming and auditing.
+
+
+
+
 # Phase I
 
 ## 📄 Project Title: HOOF-CARE – A Horse Racing & Health Monitoring Database System
