@@ -424,8 +424,9 @@ Returns the average duration of all training sessions for a given horse.
 
 📄 Syntax:
 
+```sql
 SELECT hoofcare_package.get_avg_training_duration(1) AS avg_duration FROM dual;
-
+```
 🔍 Output Example:
 
 AVG_DURATION
@@ -445,10 +446,12 @@ The package wraps both the procedure and function to support modular programming
 
 ✅ Package Specification:
 
+```sql
 CREATE OR REPLACE PACKAGE hoofcare_package AS
   PROCEDURE get_participation_by_event(p_event_id IN Participation.EventID%TYPE);
   FUNCTION get_avg_training_duration(p_horse_id IN TrainingLog.HorseID%TYPE) RETURN NUMBER;
 END hoofcare_package;
+```
 
 
 ✅ Package Body:
@@ -538,9 +541,11 @@ END hoofcare_package;
 🛡 7. Error Handling
 Both the procedure and function include:
 
+```sql
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+```
 
 
 Ensures safe execution without unexpected crashes.
