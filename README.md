@@ -348,22 +348,26 @@ UNIQUE to avoid duplicate contact information
 
 CHECK constraints to validate logical values (e.g., Duration > 0)
 
-###🔎 Validation Queries Used:
-
+### 🔎 Validation Queries Used:
+```sql
 -- Check horses without owners
+
 SELECT * FROM Horse WHERE OwnerID NOT IN (SELECT OwnerID FROM Owner);
 
 -- Check horses without training logs
+
 SELECT HorseID FROM Horse
 MINUS
 SELECT HorseID FROM TrainingLog;
 
 -- Check for duplicate trainer emails
+
 SELECT ContactInfo, COUNT(*) FROM Trainer GROUP BY ContactInfo HAVING COUNT(*) > 1;
 
 -- Check invalid training durations
-SELECT * FROM TrainingLog WHERE Duration <= 0;
 
+SELECT * FROM TrainingLog WHERE Duration <= 0;
+```
 
 ---
 
