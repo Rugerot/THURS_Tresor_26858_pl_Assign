@@ -236,12 +236,12 @@ CREATE PLUGGABLE DATABASE thurs_26858_Tresor_hoofcare_db
 This command creates the PDB using the PDBSEED template and assigns admin as the default administrator with DBA privileges.
 
 ## 👤 2. User Creation
-➤ Admin User
+### ➤ Admin User
 Username: admin
 
 Password: tresor
 
-➤ Project Schema User
+### ➤ Project Schema User
 
 CREATE USER hoofcare_user IDENTIFIED BY tresor;
 GRANT CONNECT, RESOURCE, DBA TO hoofcare_user;
@@ -257,7 +257,7 @@ The output confirmed the registration of the service:
 
 Service "thurs_26858_Tresor_hoofcare_db" has 1 instance(s) ...
 
-➤ Connection Tested Using SQL*Plus
+### ➤ Connection Tested Using SQL*Plus
 
 sqlplus hoofcare_user/tresor@localhost:1521/thurs_26858_Tresor_hoofcare_db
 
@@ -266,7 +266,7 @@ OEM Express was accessed via:
 
 https://localhost:5500/em
 
-➤ Login Credentials
+### ➤ Login Credentials
 
 User: hoofcare_user
 
@@ -274,7 +274,7 @@ Container: THURS_26858_TRESOR_HOOFCARE_DB
 
 Password: tresor
 
-📸 Screenshots of Monitoring:
+### 📸 Screenshots of Monitoring:
 
 OEM Login Screen
 ![image](https://github.com/user-attachments/assets/7184bae8-a00d-4f1f-9843-6c4ec7c18eb1)
@@ -427,7 +427,7 @@ Returns the average duration of all training sessions for a given horse.
 ```sql
 SELECT hoofcare_package.get_avg_training_duration(1) AS avg_duration FROM dual;
 ```
-🔍 Output Example:
+### 🔍 Output Example:
 
 AVG_DURATION
 ------------
@@ -550,7 +550,7 @@ EXCEPTION
 
 Ensures safe execution without unexpected crashes.
 
-###📌 Phase Completion Status
+### 📌 Phase Completion Status
 
 | Task                      | Completed |
 | ------------------------- | --------- |
@@ -687,7 +687,7 @@ END;
 /
 ```
 ## 🧪 6. Testing and Output
-###❌ Blocked Insert on Weekday:
+### ❌ Blocked Insert on Weekday:
 
 ```sql
 INSERT INTO TrainingLog (...) VALUES (...);
