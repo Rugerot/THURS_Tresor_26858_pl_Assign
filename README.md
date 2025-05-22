@@ -21,9 +21,7 @@ Key challenges addressed include:
 - Automation of administrative policies such as DML blocking on holidays and weekdays
 
 This project demonstrates full-cycle MIS development — from business process modeling and ERD design to advanced Oracle programming and auditing.
-
-
-
+---
 
 # Phase I
 
