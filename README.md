@@ -127,7 +127,7 @@ The process ensures real-time collection and use of critical data (health status
 
 ## 🏊 BPMN Swimlane Diagram
 
-![BPMN Diagram](https://github.com/Rugerot/THURS_Tresor_26858_pl_Assign/blob/main/hoofcare_bpmn.png)
+![BPMN Diagram](https://github.com/Rugerot/THURS_Tresor_26858_pl_Assign/blob/main/bpmn_diagram.png)
 
 > **Legend**:  
 > • **Ovals**: Start/End  
