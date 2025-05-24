@@ -203,6 +203,12 @@ This phase defines the logical data model for the HOOF-CARE Management Informati
 
 ---
 
+### Entity Relationship Diagram (ERD)
+
+![ERD DIAGRAM](https://github.com/Rugerot/THURS_Tresor_26858_pl_Assign/blob/main/Untitled.png)
+
+---
+
 ## 3️⃣ Normalization
 
 This logical model is fully normalized to **Third Normal Form (3NF)**:
